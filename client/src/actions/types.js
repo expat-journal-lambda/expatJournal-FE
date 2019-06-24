@@ -2,3 +2,8 @@
 export const FETCHING_STORIES = "FETCHING_STORIES";
 export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_FAILURE = "FETCH_FAILURE";
+
+// Delete Story
+export const DELETING_STORIES = "DELETING_STORIES";
+export const DELETE_SUCCESS = "DELETE_SUCCESS";
+export const DELETE_FAILURE = "DELETE_FAILURE";
