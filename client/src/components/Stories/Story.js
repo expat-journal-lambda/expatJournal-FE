@@ -14,7 +14,7 @@ Story.propTypes = {
     id: PropTypes.number.isRequired,
     sName: PropTypes.string.isRequired,
     sContent: PropTypes.string.isRequired,
-    sUser: PropTypes.number.isRequired
+    user: PropTypes.number.isRequired
   }).isRequired
 };
 
