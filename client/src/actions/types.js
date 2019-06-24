@@ -1,0 +1,4 @@
+// Fetch Story
+export const FETCHING_STORIES = "FETCHING_STORIES";
+export const FETCH_SUCCESS = "FETCH_SUCCESS";
+export const FETCH_FAILURE = "FETCH_FAILURE";
