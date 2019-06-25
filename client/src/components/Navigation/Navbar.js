@@ -1,73 +1,72 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import { StyledNavBar } from "./_NavbarStyle";
+import Login from "./modals/Login";
 
-const StyledNavBar = styled.header`
-  background: #052135;
-  color: #d3dadf;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 78px;
-  overflow: hidden;
+class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
 
-  .logo-div {
-    flex: 1;
-    padding-left: 4rem;
-    font-family: "Lilita One", cursive;
-    font-weight: 100;
-    font-style: italic;
+    this.state = {
+      modalOpen: false
+    };
   }
+  openLoginModal = () => {
+    this.setState({ modalOpen: true });
+  };
 
-  ul {
-    flex: 1;
-    display: flex;
-    height: 78px;
+  afterOpenLoginModal = () => {
+    // references are now sync'd and can be accessed.
+    // this.subtitle.style.color = "#f00";
+  };
+  openModal = () => {
+    this.setState({ modalOpen: true });
+  };
 
-    li {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  afterOpenModal = () => {
+    // references are now sync'd and can be accessed.
+    // this.subtitle.style.color = "#f00";
+  };
 
-      a {
-        color: white;
-        text-decoration: none;
-        display: block;
-        height: 100%;
-        width: 100%;
-        text-align: center;
-        line-height: 1.6rem;
-        padding-top: 1.6rem;
-        font-size: 1.2rem;
+  closeModal = () => {
+    this.setState({ modalOpen: false });
+  };
 
-        &:hover {
-          background: #09314d;
-        }
-      }
-    }
+  render() {
+    const { modalOpen } = this.state;
+    return (
+      <StyledNavBar>
+        <Login
+          modalOpen={modalOpen}
+          closeModal={this.closeModal}
+          afterOpenLoginModal={this.afterOpenLoginModal}
+        />
+
+        <div className="logo-div">
+          <h1>ExpatStories</h1>
+        </div>
+        <ul>
+          <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li>
+            <NavLink to="/add-story">Create Story</NavLink>
+          </li>
+          <li>
+            <a
+              href="/#"
+              onClick={e => {
+                e.preventDefault();
+                this.openLoginModal();
+              }}
+            >
+              Login
+            </a>
+          </li>
+        </ul>
+      </StyledNavBar>
+    );
   }
-`;
-
-const Navbar = () => {
-  return (
-    <StyledNavBar>
-      <div className="logo-div">
-        <h1>ExpatStories</h1>
-      </div>
-      <ul>
-        <li>
-          <NavLink to="/">Home</NavLink>
-        </li>
-        <li>
-          <NavLink to="/add-story">Create Story</NavLink>
-        </li>
-        <li>
-          <NavLink to="/add-story">Login</NavLink>
-        </li>
-      </ul>
-    </StyledNavBar>
-  );
-};
+}
 
 export default Navbar;

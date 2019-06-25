@@ -1,4 +1,5 @@
-import axios from "axios";
+// import axios from "axios";
+import axiosEnriched from "../axios";
 import {
   FETCHING_STORIES,
   FETCH_FAILURE,
@@ -39,7 +40,7 @@ const fetching = status => ({
 export const fetchStories = () => dispatch => {
   const url = `${apiUrl}/stories`;
   dispatch(fetching(true));
-  axios
+  axiosEnriched()
     .get(url)
     .then(res => {
       dispatch(fetchSuccess(res.data));
@@ -69,7 +70,7 @@ const deleting = status => ({
 export const deleteStory = id => dispatch => {
   const url = `${apiUrl}/stories/delete/${id}`;
   dispatch(deleting(true));
-  axios
+  axiosEnriched()
     .delete(url)
     .then(res => {
       dispatch(deleteSuccess());
@@ -100,7 +101,7 @@ const adding = status => ({
 export const addStory = story => dispatch => {
   const url = `${apiUrl}/stories/new`;
   dispatch(adding(true));
-  axios
+  axiosEnriched()
     .post(url, story)
     .then(res => {
       dispatch(addSuccess(false));
@@ -137,7 +138,7 @@ export const getStory = id => dispatch => {
   const url = `${apiUrl}/stories/byId/${id}`;
 
   dispatch(gettingStory(true));
-  axios
+  axiosEnriched()
     .get(url)
     .then(res => dispatch(getStorySuccess(res.data.id)))
     .catch(err => {
@@ -165,7 +166,7 @@ const updatingStory = status => ({
 export const updateStory = story => dispatch => {
   const url = `${apiUrl}/stories/update/${story.id}`;
   dispatch(updatingStory(true));
-  axios
+  axiosEnriched()
     .put(url, story)
     .then(res => {
       dispatch(updateSuccess(false));
