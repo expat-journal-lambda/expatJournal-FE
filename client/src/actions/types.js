@@ -17,3 +17,4 @@ export const ADD_SUCCESS = "ADD_SUCCESS";
 export const GETTING_STORY = "GETTING_STORY";
 export const GET_FAILURE = "GET_FAILURE";
 export const GET_SUCCESS = "GET_SUCCESS";
+export const EDITING_STORY = "EDITING_STORY";

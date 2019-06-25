@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addStory, getStory, fetchStories } from "../../actions/storyActions";
+import {
+  addStory,
+  getStory,
+  fetchStories,
+  editingStory
+} from "../../actions/storyActions";
 
 class StoryForm extends Component {
   constructor(props) {
@@ -20,8 +25,10 @@ class StoryForm extends Component {
 
     if (id) {
       this.props.getStory(id);
+    } else {
+      this.props.editingStory(false);
+      this.setState({ sName: "", sContent: "", sCountry: "" });
     }
-    console.log(this.state);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,9 +55,13 @@ class StoryForm extends Component {
 
   render() {
     const { sName, sContent, sCountry } = this.state;
+    const { editing } = this.props;
+    const formTitle = editing ? "Edit Story" : "Add Story";
+
     return (
       <div>
         <form method="post" onSubmit={this.submit}>
+          <h3>{formTitle}</h3>
           <div>
             <input
               type="text"
@@ -78,7 +89,11 @@ class StoryForm extends Component {
             />
           </div>
           <div>
-            <button type="submit">Add Story</button>
+            {editing ? (
+              <button type="submit">Update Story</button>
+            ) : (
+              <button type="submit">Add Story</button>
+            )}
           </div>
         </form>
       </div>
@@ -87,12 +102,12 @@ class StoryForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  stories: state.stories.stories,
+  editing: state.stories.editing,
   currentStory: state.stories.currentStory,
   story: state.stories.stories.find(st => state.stories.currentStory === st.id)
 });
 
 export default connect(
   mapStateToProps,
-  { addStory, getStory, fetchStories }
+  { addStory, getStory, fetchStories, editingStory }
 )(StoryForm);

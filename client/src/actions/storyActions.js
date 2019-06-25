@@ -11,7 +11,8 @@ import {
   ADD_SUCCESS,
   GET_FAILURE,
   GETTING_STORY,
-  GET_SUCCESS
+  GET_SUCCESS,
+  EDITING_STORY
 } from "./types";
 
 const apiUrl = "https://expat-stack.herokuapp.com/api";
@@ -113,6 +114,12 @@ const getStorySuccess = error => ({
   type: GET_SUCCESS,
   payload: error
 });
+
+export const editingStory = status => ({
+  type: EDITING_STORY,
+  payload: status
+});
+
 const getStoryFailure = error => ({
   type: GET_FAILURE,
   payload: error
