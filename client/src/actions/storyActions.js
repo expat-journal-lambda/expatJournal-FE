@@ -9,9 +9,9 @@ import {
   ADD_FAILURE,
   ADDING_STORY,
   ADD_SUCCESS,
-  GET_SUCCESS,
   GET_FAILURE,
-  GETTING_STORY
+  GETTING_STORY,
+  GET_SUCCESS
 } from "./types";
 
 const apiUrl = "https://expat-stack.herokuapp.com/api";
@@ -109,6 +109,10 @@ export const addStory = story => dispatch => {
 };
 
 // GET STORY
+const getStorySuccess = error => ({
+  type: GET_SUCCESS,
+  payload: error
+});
 const getStoryFailure = error => ({
   type: GET_FAILURE,
   payload: error
@@ -125,7 +129,7 @@ export const getStory = id => dispatch => {
   dispatch(gettingStory(true));
   axios
     .get(url)
-    .then(res => {})
+    .then(res => dispatch(getStorySuccess(res.data.id)))
     .catch(err => {
       dispatch(getStoryFailure(err.message));
     })

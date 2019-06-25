@@ -1,15 +1,39 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addStory } from "../../actions/storyActions";
+import { addStory, getStory, fetchStories } from "../../actions/storyActions";
 
 class StoryForm extends Component {
-  state = {
-    id: null,
-    sName: "",
-    sContent: "",
-    user: null || 3,
-    sCountry: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: props.story ? props.story.id : "",
+      sName: props.story ? props.story.sName : "",
+      sContent: props.story ? props.story.sContent : "",
+      user: null || 3,
+      sCountry: props.story ? props.story.sCountry : ""
+    };
+  }
+
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    this.props.fetchStories();
+
+    if (id) {
+      this.props.getStory(id);
+    }
+    console.log(this.state);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { story } = nextProps;
+    this.setState({
+      id: story ? story.id : "",
+      sName: story ? story.sName : "",
+      sContent: story ? story.sContent : "",
+      user: null || 3,
+      sCountry: story && story.sCountry ? story.sCountry : ""
+    });
+  }
 
   change = evt => {
     evt.preventDefault();
@@ -23,7 +47,7 @@ class StoryForm extends Component {
   };
 
   render() {
-    const { sName, sContent, sCountry } = this.props;
+    const { sName, sContent, sCountry } = this.state;
     return (
       <div>
         <form method="post" onSubmit={this.submit}>
@@ -61,7 +85,14 @@ class StoryForm extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  stories: state.stories.stories,
+  currentStory: state.stories.currentStory,
+  story: state.stories.stories.find(st => state.stories.currentStory === st.id)
+});
+
 export default connect(
-  null,
-  { addStory }
+  mapStateToProps,
+  { addStory, getStory, fetchStories }
 )(StoryForm);

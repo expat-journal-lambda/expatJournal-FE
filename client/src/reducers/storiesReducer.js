@@ -6,7 +6,8 @@ import {
   ADD_FAILURE,
   ADD_SUCCESS,
   GETTING_STORY,
-  GET_FAILURE
+  GET_FAILURE,
+  GET_SUCCESS
 } from "../actions/types";
 
 const initialState = {
@@ -56,6 +57,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         gettingStory: action.payload
+      };
+
+    case GET_SUCCESS:
+      return {
+        ...state,
+        currentStory: action.payload
       };
     case GET_FAILURE:
       return {

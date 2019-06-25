@@ -10,6 +10,7 @@ const App = () => {
       <Navbar />
       <Route exact path="/" component={StoryList} />
       <Route path="/add-story" component={StoryForm} />
+      <Route path="/stories/edit/:id" component={StoryForm} />
     </div>
   );
 };
