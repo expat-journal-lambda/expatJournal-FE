@@ -3,10 +3,15 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Story from "./Story";
 import { fetchStories } from "../../actions/storyActions";
+import styled from "styled-components";
 
-const propTypes = {
-  stories: PropTypes.array.isRequired
-};
+const StyledStoryList = styled.div`
+  width: 90%;
+  margin: 1rem auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+`;
 
 class StoriesList extends Component {
   componentDidMount() {
@@ -16,16 +21,18 @@ class StoriesList extends Component {
     const { stories } = this.props;
 
     return (
-      <div>
+      <StyledStoryList>
         {stories.map(story => (
           <Story key={story.id} story={story} />
         ))}
-      </div>
+      </StyledStoryList>
     );
   }
 }
 
-StoriesList.propTypes = propTypes;
+StoriesList.propTypes = {
+  stories: PropTypes.array.isRequired
+};
 
 const mapStateToProps = state => ({
   stories: state.stories.stories

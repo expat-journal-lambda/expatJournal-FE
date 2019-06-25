@@ -7,6 +7,47 @@ import {
   editingStory,
   updateStory
 } from "../../actions/storyActions";
+import styled from "styled-components";
+
+const StyledFormWrapper = styled.div`
+  background: white;
+  width: 80%;
+  margin: 1rem auto;
+  padding: 4rem 0rem 4rem 0rem;
+  border-radius: 5px;
+`;
+
+const StyledForm = styled.form`
+  width: 80%;
+  margin: 1rem auto;
+
+  input,
+  textarea {
+    width: 100%;
+    font-size: 1.35rem;
+    padding: 1rem;
+    margin: 0.51rem auto;
+    outline: none;
+    font-family: "Montserrat", sans-serif;
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+  }
+  h2 {
+    text-align: center;
+  }
+  .btn {
+    width: 100%;
+    font-size: 1.3rem;
+    padding: 0.9em;
+    border: 1px solid transparent;
+    color: white;
+    background: #09314d;
+    border-radius: 0.3em;
+
+    &:hover {
+    }
+  }
+`;
 
 class StoryForm extends Component {
   constructor(props) {
@@ -66,11 +107,12 @@ class StoryForm extends Component {
     const formTitle = editing ? "Edit Story" : "Add Story";
 
     return (
-      <div>
-        <form method="post" onSubmit={this.submit}>
-          <h3>{formTitle}</h3>
+      <StyledFormWrapper>
+        <StyledForm method="post" onSubmit={this.submit}>
+          <h2>{formTitle}</h2>
           <div>
             <input
+              autoFocus
               type="text"
               name="sName"
               value={sName}
@@ -97,13 +139,17 @@ class StoryForm extends Component {
           </div>
           <div>
             {editing ? (
-              <button type="submit">Update Story</button>
+              <button type="submit" className="btn">
+                Update Story
+              </button>
             ) : (
-              <button type="submit">Add Story</button>
+              <button type="submit" className="btn">
+                Add Story
+              </button>
             )}
           </div>
-        </form>
-      </div>
+        </StyledForm>
+      </StyledFormWrapper>
     );
   }
 }
