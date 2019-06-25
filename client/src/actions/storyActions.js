@@ -109,11 +109,6 @@ export const addStory = story => dispatch => {
 };
 
 // GET STORY
-const getStorySucces = status => ({
-  type: GET_SUCCESS,
-  payload: status
-});
-
 const getStoryFailure = error => ({
   type: GET_FAILURE,
   payload: error
@@ -130,9 +125,7 @@ export const getStory = id => dispatch => {
   dispatch(gettingStory(true));
   axios
     .get(url)
-    .then(res => {
-      dispatch(getStorySucces(false));
-    })
+    .then(res => {})
     .catch(err => {
       dispatch(getStoryFailure(err.message));
     })

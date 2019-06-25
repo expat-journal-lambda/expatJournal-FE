@@ -4,11 +4,15 @@ import {
   FETCH_FAILURE,
   ADDING_STORY,
   ADD_FAILURE,
-  ADD_SUCCESS
+  ADD_SUCCESS,
+  GETTING_STORY,
+  GET_FAILURE
 } from "../actions/types";
 
 const initialState = {
   stories: [],
+  currentStory: null,
+  gettingStory: false,
   fetchingStories: false,
   addingStory: false,
   error: null
@@ -48,6 +52,16 @@ export default (state = initialState, action) => {
         error: action.payload
       };
 
+    case GETTING_STORY:
+      return {
+        ...state,
+        gettingStory: action.payload
+      };
+    case GET_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      };
     default:
       return state;
   }
