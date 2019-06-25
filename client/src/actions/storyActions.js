@@ -5,7 +5,9 @@ import {
   FETCH_SUCCESS,
   DELETE_SUCCESS,
   DELETE_FAILURE,
-  DELETING_STORIES
+  DELETING_STORIES,
+  ADD_FAILURE,
+  ADDING_STORY
 } from "./types";
 
 const apiUrl = "https://expat-stack.herokuapp.com/api";
@@ -68,4 +70,30 @@ export const deleteStory = id => dispatch => {
       dispatch(deleteFailure(err.message));
     })
     .finally(() => dispatch(deleting(false)));
+};
+
+// ADD STORY
+
+const addFailure = error => ({
+  type: ADD_FAILURE,
+  payload: error
+});
+
+const adding = status => ({
+  type: ADDING_STORY,
+  payload: status
+});
+
+export const addStory = story => dispatch => {
+  const url = `${apiUrl}/stories/new`;
+  dispatch(adding(true));
+  axios
+    .delete(url, story)
+    .then(res => {
+      dispatch(fetchSuccess(res.data));
+    })
+    .catch(err => {
+      dispatch(addFailure(err.message));
+    })
+    .finally(() => dispatch(adding(false)));
 };

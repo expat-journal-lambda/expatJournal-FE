@@ -7,3 +7,8 @@ export const FETCH_FAILURE = "FETCH_FAILURE";
 export const DELETING_STORIES = "DELETING_STORIES";
 export const DELETE_SUCCESS = "DELETE_SUCCESS";
 export const DELETE_FAILURE = "DELETE_FAILURE";
+
+// Add Story
+export const ADDING_STORY = "ADDING_STORY";
+export const ADD_FAILURE = "ADD_FAILURE";
+export const ADD_SUCCESS = "ADD_SUCCESS";
