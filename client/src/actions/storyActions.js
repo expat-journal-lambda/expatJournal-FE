@@ -57,12 +57,12 @@ const deleting = status => ({
 });
 
 export const deleteStory = id => dispatch => {
-  const url = `${apiUrl}/stories/${id}`;
+  const url = `${apiUrl}/stories/delete/${id}`;
   dispatch(deleting(true));
   axios
-    .get(url)
+    .delete(url)
     .then(res => {
-      dispatch(deleteSuccess(res.data));
+      dispatch(fetchSuccess(res.data));
     })
     .catch(err => {
       dispatch(deleteFailure(err.message));

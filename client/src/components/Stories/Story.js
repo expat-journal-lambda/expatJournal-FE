@@ -1,13 +1,19 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { deleteStory } from "../../actions/storyActions";
 
-const Story = ({ story }) => {
-  return (
-    <div>
-      <h3>{story.sName}</h3>
-    </div>
-  );
-};
+class Story extends Component {
+  render() {
+    const { story, deleteStory } = this.props;
+    return (
+      <div>
+        <h3>{story.sName}</h3>
+        <span onClick={() => deleteStory(story.id)}>x</span>
+      </div>
+    );
+  }
+}
 
 Story.propTypes = {
   story: PropTypes.shape({
@@ -18,4 +24,7 @@ Story.propTypes = {
   }).isRequired
 };
 
-export default Story;
+export default connect(
+  null,
+  { deleteStory }
+)(Story);

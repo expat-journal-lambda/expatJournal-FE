@@ -1,10 +1,11 @@
 import React from "react";
+import { Route } from "react-router-dom";
 import StoryList from "./components/Stories/StoryList";
 
 const App = () => {
   return (
     <div>
-      <StoryList />
+      <Route exact path="/" component={StoryList} />
     </div>
   );
 };
