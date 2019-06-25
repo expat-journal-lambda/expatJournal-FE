@@ -8,7 +8,10 @@ import {
   DELETING_STORIES,
   ADD_FAILURE,
   ADDING_STORY,
-  ADD_SUCCESS
+  ADD_SUCCESS,
+  GET_SUCCESS,
+  GET_FAILURE,
+  GETTING_STORY
 } from "./types";
 
 const apiUrl = "https://expat-stack.herokuapp.com/api";
@@ -75,7 +78,6 @@ export const deleteStory = id => dispatch => {
 };
 
 // ADD STORY
-
 const addSuccess = status => ({
   type: ADD_SUCCESS,
   payload: status
@@ -104,4 +106,35 @@ export const addStory = story => dispatch => {
       dispatch(addFailure(err.message));
     })
     .finally(() => dispatch(adding(false)));
+};
+
+// GET STORY
+const getStorySucces = status => ({
+  type: GET_SUCCESS,
+  payload: status
+});
+
+const getStoryFailure = error => ({
+  type: GET_FAILURE,
+  payload: error
+});
+
+const gettingStory = status => ({
+  type: GETTING_STORY,
+  payload: status
+});
+
+export const getStory = id => dispatch => {
+  const url = `${apiUrl}/stories/byId/${id}`;
+
+  dispatch(gettingStory(true));
+  axios
+    .get(url)
+    .then(res => {
+      dispatch(getStorySucces(false));
+    })
+    .catch(err => {
+      dispatch(getStoryFailure(err.message));
+    })
+    .finally(() => dispatch(gettingStory(false)));
 };

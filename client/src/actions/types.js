@@ -12,3 +12,8 @@ export const DELETE_FAILURE = "DELETE_FAILURE";
 export const ADDING_STORY = "ADDING_STORY";
 export const ADD_FAILURE = "ADD_FAILURE";
 export const ADD_SUCCESS = "ADD_SUCCESS";
+
+// GET Story
+export const GETTING_STORY = "GETTING_STORY";
+export const GET_FAILURE = "GET_FAILURE";
+export const GET_SUCCESS = "GET_SUCCESS";
