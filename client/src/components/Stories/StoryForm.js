@@ -4,7 +4,8 @@ import {
   addStory,
   getStory,
   fetchStories,
-  editingStory
+  editingStory,
+  updateStory
 } from "../../actions/storyActions";
 
 class StoryForm extends Component {
@@ -48,9 +49,15 @@ class StoryForm extends Component {
   };
 
   submit = evt => {
+    const { editing } = this.props;
     evt.preventDefault();
-    this.props.addStory(this.state);
-    this.props.history.push("/");
+    if (editing) {
+      this.props.updateStory(this.state);
+      this.props.history.push("/");
+    } else {
+      this.props.addStory(this.state);
+      this.props.history.push("/");
+    }
   };
 
   render() {
@@ -109,5 +116,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addStory, getStory, fetchStories, editingStory }
+  { addStory, getStory, fetchStories, editingStory, updateStory }
 )(StoryForm);

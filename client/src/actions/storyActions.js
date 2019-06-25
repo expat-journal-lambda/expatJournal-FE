@@ -12,7 +12,10 @@ import {
   GET_FAILURE,
   GETTING_STORY,
   GET_SUCCESS,
-  EDITING_STORY
+  EDITING_STORY,
+  UPDATING_STORY,
+  UPDATE_FAILURE,
+  UPDATE_SUCCESS
 } from "./types";
 
 const apiUrl = "https://expat-stack.herokuapp.com/api";
@@ -141,4 +144,35 @@ export const getStory = id => dispatch => {
       dispatch(getStoryFailure(err.message));
     })
     .finally(() => dispatch(gettingStory(false)));
+};
+
+// GET STORY
+const updateSuccess = error => ({
+  type: UPDATE_SUCCESS,
+  payload: error
+});
+
+const updateFailure = error => ({
+  type: UPDATE_FAILURE,
+  payload: error
+});
+
+const updatingStory = status => ({
+  type: UPDATING_STORY,
+  payload: status
+});
+
+export const updateStory = story => dispatch => {
+  const url = `${apiUrl}/stories/${story.id}`;
+  dispatch(updatingStory(true));
+  axios
+    .put(url, story)
+    .then(res => {
+      dispatch(updateSuccess(false));
+      dispatch(fetchSuccess(res.data));
+    })
+    .catch(err => {
+      dispatch(updateFailure(err.message));
+    })
+    .finally(() => dispatch(updatingStory(false)));
 };
