@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addStory } from "../../actions/storyActions";
 
 class StoryForm extends Component {
   state = {
@@ -16,6 +18,8 @@ class StoryForm extends Component {
 
   submit = evt => {
     evt.preventDefault();
+    this.props.addStory(this.state);
+    this.props.history.push("/");
   };
 
   render() {
@@ -57,4 +61,7 @@ class StoryForm extends Component {
     );
   }
 }
-export default StoryForm;
+export default connect(
+  null,
+  { addStory }
+)(StoryForm);

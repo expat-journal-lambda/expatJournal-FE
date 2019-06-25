@@ -7,7 +7,8 @@ import {
   DELETE_FAILURE,
   DELETING_STORIES,
   ADD_FAILURE,
-  ADDING_STORY
+  ADDING_STORY,
+  ADD_SUCCESS
 } from "./types";
 
 const apiUrl = "https://expat-stack.herokuapp.com/api";
@@ -43,9 +44,9 @@ export const fetchStories = () => dispatch => {
 };
 
 // DELETE STORIES
-const deleteSuccess = stories => ({
+const deleteSuccess = status => ({
   type: DELETE_SUCCESS,
-  payload: stories
+  payload: status
 });
 
 const deleteFailure = error => ({
@@ -64,6 +65,7 @@ export const deleteStory = id => dispatch => {
   axios
     .delete(url)
     .then(res => {
+      dispatch(deleteSuccess());
       dispatch(fetchSuccess(res.data));
     })
     .catch(err => {
@@ -73,6 +75,11 @@ export const deleteStory = id => dispatch => {
 };
 
 // ADD STORY
+
+const addSuccess = status => ({
+  type: ADD_SUCCESS,
+  payload: status
+});
 
 const addFailure = error => ({
   type: ADD_FAILURE,
@@ -88,8 +95,9 @@ export const addStory = story => dispatch => {
   const url = `${apiUrl}/stories/new`;
   dispatch(adding(true));
   axios
-    .delete(url, story)
+    .post(url, story)
     .then(res => {
+      dispatch(addSuccess(false));
       dispatch(fetchSuccess(res.data));
     })
     .catch(err => {
