@@ -8,7 +8,10 @@ import {
   GETTING_STORY,
   GET_FAILURE,
   GET_SUCCESS,
-  EDITING_STORY
+  EDITING_STORY,
+  UPDATING_STORY,
+  UPDATE_SUCCESS,
+  UPDATE_FAILURE
 } from "../actions/types";
 
 const initialState = {
@@ -16,6 +19,7 @@ const initialState = {
   currentStory: null,
   gettingStory: false,
   editing: false,
+  updatingStory: false,
   fetchingStories: false,
   addingStory: false,
   error: null
@@ -50,6 +54,22 @@ export default (state = initialState, action) => {
         addingStory: action.payload
       };
     case ADD_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      };
+
+    case UPDATING_STORY:
+      return {
+        ...state,
+        updatingStory: action.payload
+      };
+    case UPDATE_SUCCESS:
+      return {
+        ...state,
+        updatingStory: action.payload
+      };
+    case UPDATE_FAILURE:
       return {
         ...state,
         error: action.payload

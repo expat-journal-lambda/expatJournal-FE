@@ -163,7 +163,7 @@ const updatingStory = status => ({
 });
 
 export const updateStory = story => dispatch => {
-  const url = `${apiUrl}/stories/${story.id}`;
+  const url = `${apiUrl}/stories/update/${story.id}`;
   dispatch(updatingStory(true));
   axios
     .put(url, story)
