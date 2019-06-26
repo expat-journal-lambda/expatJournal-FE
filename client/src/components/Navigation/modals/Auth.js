@@ -19,22 +19,65 @@ export default class Login extends Component {
 
     this.state = {
       loginOpen: true,
-      registerOpen: false
+      registerOpen: false,
+      loginData: {
+        username: "",
+        password: ""
+      },
+      registerData: {
+        username: "",
+        password: "",
+        passwordConf: ""
+      }
     };
   }
 
+  loginChange = e => {
+    this.setState({
+      ...this.state,
+      loginData: { ...this.state.loginData, [e.target.name]: e.target.value }
+    });
+  };
+
+  registerChange = e => {
+    this.setState({
+      ...this.state,
+      registerData: {
+        ...this.state.registerData,
+        [e.target.name]: e.target.value
+      }
+    });
+  };
+
+  submitLogin = e => {
+    e.preventDefault();
+
+  };
+
   render() {
     const { modalOpen, afterOpenModal, closeModal } = this.props;
-    const { loginOpen, registerOpen } = this.state;
+    const { loginOpen, registerOpen, loginData, registerData } = this.state;
     const LoginDisplay = (
       <div className="login">
-        <form>
+        <form method="POST" onSubmit={e => this.submitLogin(e)}>
           <h3>Login</h3>
           <div>
-            <input type="text" name="username" placeholder="Username" />
+            <input
+              type="text"
+              name="username"
+              value={loginData.username}
+              onChange={this.loginChange}
+              placeholder="Username"
+            />
           </div>
           <div>
-            <input type="password" name="password" placeholder="Password" />
+            <input
+              type="password"
+              name="password"
+              value={loginData.password}
+              onChange={this.loginChange}
+              placeholder="Password"
+            />
           </div>
           <div>
             <button type="submit">Login</button>
@@ -47,10 +90,25 @@ export default class Login extends Component {
         <form>
           <h3>Register</h3>
           <div>
-            <input type="text" name="username" placeholder="Username" />
+            <input
+              type="text"
+              name="username"
+              value={registerData.username}
+              onChange={this.registerChange}
+              placeholder="Username"
+            />
           </div>
           <div>
             <input type="password" name="password" placeholder="Password" />
+          </div>
+          <div>
+            <input
+              type="password"
+              name="passwordConf"
+              value={registerData.password}
+              onChange={this.registerChange}
+              placeholder="Password Confirm"
+            />
           </div>
           <div>
             <button type="submit">Register</button>
