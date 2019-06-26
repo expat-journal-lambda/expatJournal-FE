@@ -55,7 +55,7 @@ const StoryBody = styled.div`
 
 class Story extends Component {
   render() {
-    const { story, deleteStory } = this.props;
+    const { story, deleteStory, userId } = this.props;
     return (
       <StyledStory>
         <StoryBody>
@@ -63,10 +63,18 @@ class Story extends Component {
           <p>{story.sCountry}</p>
         </StoryBody>
         <StoryFooter>
-          <Delete onClick={() => deleteStory(story.id)}>x</Delete>
-          <Edit to={`/stories/edit/${story.id}`}>
-            <IoMdCreate />
-          </Edit>
+          {userId ? (
+            <React.Fragment>
+              <Delete onClick={() => deleteStory(story.id)}>x</Delete>
+              <Edit to={`/stories/edit/${story.id}`}>
+                <IoMdCreate />
+              </Edit>
+            </React.Fragment>
+          ) : (
+            <a href="/#" className="btn btn-default">
+              {story.username}
+            </a>
+          )}
         </StoryFooter>
       </StyledStory>
     );
@@ -82,7 +90,11 @@ Story.propTypes = {
   }).isRequired
 };
 
+const mapStateToProps = state => ({
+  userId: state.auth.userId
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { deleteStory }
 )(Story);

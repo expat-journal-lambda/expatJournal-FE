@@ -5,6 +5,10 @@ import { loginUser, registerUser } from "../../../actions/authActions";
 import styled from "styled-components";
 import { IoIosClose } from "react-icons/io";
 
+const StyledMessage = styled.div`
+  margin: 1rem auto;
+`;
+
 const StyledModalHeader = styled.header`
   display: flex;
   padding-top: 2rem;
@@ -33,7 +37,9 @@ const StyledModalHeader = styled.header`
 const StyledAuthWrapper = styled.div`
   form h3 {
     text-align: center;
+    margin: 2rem auto;
   }
+
   form input {
     width: 100%;
     font-size: 1.2rem;
@@ -119,13 +125,30 @@ class Login extends Component {
     });
   };
 
+  componentWillReceiveProps(nextProps) {
+    console.log("Will mount", nextProps);
+    if ((this.state.loginOpen || this.state.registerOpen) && nextProps.userId) {
+      this.setState({
+        msg: "You are now logged in. Redirecting...",
+        msgClass: "alert-success"
+      });
+      setTimeout(() => {
+        this.setState({
+          msg: "",
+          msgClass: ""
+        });
+        window.location.reload();
+      }, 3000);
+    }
+  }
+
   submitLogin = e => {
     e.preventDefault();
     this.props.loginUser(this.state.loginData);
 
-    if (this.props.userId) {
-      window.location.reload();
-    }
+    // if (this.props.userId) {
+    //   window.location.reload();
+    // }
   };
 
   submitRegister = e => {
@@ -144,7 +167,7 @@ class Login extends Component {
         this.setState({
           ...this.state,
           msg: "You are now logged in. Redirecting...",
-          msgClass: "success"
+          msgClass: "alert-success"
         });
 
         window.location.reload();
@@ -266,7 +289,11 @@ class Login extends Component {
             Register
           </span>
         </StyledModalHeader>
-        {this.state.msg && <p>{this.state.msg}</p>}
+        {this.state.msg && (
+          <StyledMessage className={`alert ${this.state.msgClass}`}>
+            {this.state.msg}
+          </StyledMessage>
+        )}
         {loginOpen && LoginDisplay}
         {registerOpen && RegisterDisplay}
       </Modal>

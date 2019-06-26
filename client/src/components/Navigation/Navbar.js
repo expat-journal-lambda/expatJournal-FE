@@ -50,9 +50,16 @@ class Navbar extends React.Component {
           <li>
             <NavLink to="/">Home</NavLink>
           </li>
-          <li>
-            <NavLink to="/add-story">Create Story</NavLink>
-          </li>
+          {!this.props.userId ? (
+            <li>
+              <NavLink to="/">Stories</NavLink>
+            </li>
+          ) : (
+            <li>
+              <NavLink to="/add-story">Create Story</NavLink>
+            </li>
+          )}
+
           {!this.props.userId ? (
             <li>
               <a
