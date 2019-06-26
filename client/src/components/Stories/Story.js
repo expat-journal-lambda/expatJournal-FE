@@ -22,8 +22,21 @@ const StyledStory = styled.div`
     width: 100%;
     height: 290px;
     overflow: hidden;
+    position: relative;
+
     img {
       width: 100%;
+    }
+
+    span {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      border: 1px solid transparent;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 0.3rem 1rem;
+      color: white;
+      border-radius: 5px;
     }
   }
 `;
@@ -93,7 +106,7 @@ class Story extends Component {
       <StyledStory>
         <div className="story-image">
           <img src={story.image} alt={story.sName} />
-          <span>{story.sCountry}</span>
+          {story.sCountry && <span>{story.sCountry}</span>}
         </div>
         <StoryFooter>
           <div className="post-title">
