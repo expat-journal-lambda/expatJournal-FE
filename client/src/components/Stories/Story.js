@@ -17,20 +17,60 @@ const StyledStory = styled.div`
   -webkit-box-shadow: 0 5px 8px -3px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 5px 8px -3px rgba(0, 0, 0, 0.15);
   box-shadow: 0 5px 8px -3px rgba(0, 0, 0, 0.15);
+
+  .story-image {
+    width: 100%;
+    height: 290px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
 `;
 
 const StoryFooter = styled.div`
-  border-top: 1px solid #e0e0e0;
+  width: 100%;
+  height: 135px;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 3rem;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .post-title {
+    padding: 0.5rem 0.5rem 0rem 0.5rem;
+  }
+
+  .post-details {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+
+    .action-btns {
+      width: 9rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      img {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        margin-right: 0.2rem;
+      }
+    }
+  }
 `;
 
 const Delete = styled(IoIosClose)`
   color: red;
   font-size: 2.5rem;
-  margin: auto 1.5rem;
+
   &:hover {
     cursor: pointer;
   }
@@ -39,17 +79,10 @@ const Delete = styled(IoIosClose)`
 const Edit = styled(Link)`
   color: green;
   font-size: 1.2rem;
-  margin: auto 1.5rem;
+  margin: auto 1rem auto 1.5rem;
+
   &:hover {
     cursor: pointer;
-  }
-`;
-const StoryBody = styled.div`
-  padding: 1rem;
-
-  h3 {
-    margin: 5px 0px;
-    padding: 0px;
   }
 `;
 
@@ -58,23 +91,28 @@ class Story extends Component {
     const { story, deleteStory, userId } = this.props;
     return (
       <StyledStory>
-        <StoryBody>
-          <h3>{story.sName}</h3>
-          <p>{story.sCountry}</p>
-        </StoryBody>
+        <div className="story-image">
+          <img src={story.image} alt={story.sName} />
+          <span>{story.sCountry}</span>
+        </div>
         <StoryFooter>
-          {userId ? (
-            <React.Fragment>
-              <Delete onClick={() => deleteStory(story.id)}>x</Delete>
-              <Edit to={`/stories/edit/${story.id}`}>
-                <IoMdCreate />
-              </Edit>
-            </React.Fragment>
-          ) : (
-            <a href="/#" className="btn btn-default">
-              {story.username}
-            </a>
-          )}
+          <div className="post-title">
+            <h3>{story.sName}</h3>
+          </div>
+          <div className="post-details">
+            <div className="user-info">
+              <img src={story.avatar} alt={story.username} />
+              <span>{story.username}</span>
+            </div>
+            {userId && (
+              <div className="action-btns">
+                <Delete onClick={() => deleteStory(story.id)}>x</Delete>
+                <Edit to={`/stories/edit/${story.id}`}>
+                  <IoMdCreate />
+                </Edit>
+              </div>
+            )}
+          </div>
         </StoryFooter>
       </StyledStory>
     );
