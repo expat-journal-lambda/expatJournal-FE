@@ -2,6 +2,46 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
 import { loginUser, registerUser } from "../../../actions/authActions";
+import styled from "styled-components";
+
+const StyledAuthWrapper = styled.div`
+  form h3 {
+    text-align: center;
+  }
+  form input {
+    width: 100%;
+    font-size: 1.2rem;
+    margin-bottom: 0.5em;
+    padding: 0.8em;
+    border-radius: 5px;
+    border: 1px solid #d1d1d1;
+    font-family: "Montserrat", sans-serif;
+    outline: none;
+  }
+  form button {
+    width: 100%;
+    padding: 0.9rem;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    background: #177abf;
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    outline: none;
+
+    &:hover {
+      cursor: pointer;
+      background: #136198;
+    }
+
+    &.register-btn {
+      background: #4ea699;
+      &:hover {
+        background: #3e847a;
+      }
+    }
+  }
+`;
 
 const customStyles = {
   content: {
@@ -56,26 +96,41 @@ class Login extends Component {
   submitLogin = e => {
     e.preventDefault();
     this.props.loginUser(this.state.loginData);
-    // window.location.reload();
+
+    if (this.props.userId) {
+      window.location.reload();
+    }
   };
 
   submitRegister = e => {
     e.preventDefault();
     const { username, password, passwordConf } = this.state.registerData;
-    this.setState({
-      ...this.state,
-      msg: "The two passwords do not match",
-      msgClass: "error"
-    });
-    this.props.registerUser({ username, password });
-    // window.location.reload();
+    if (password !== passwordConf) {
+      this.setState({
+        ...this.state,
+        msg: "The two passwords do not match",
+        msgClass: "error"
+      });
+    } else {
+      this.props.registerUser({ username, password });
+      window.location.reload();
+      if (this.props.userId) {
+        this.setState({
+          ...this.state,
+          msg: "You are now logged in. Redirecting...",
+          msgClass: "success"
+        });
+
+        window.location.reload();
+      }
+    }
   };
 
   render() {
     const { modalOpen, afterOpenModal, closeModal } = this.props;
     const { loginOpen, registerOpen, loginData, registerData } = this.state;
     const LoginDisplay = (
-      <div className="login">
+      <StyledAuthWrapper>
         <form method="POST" onSubmit={e => this.submitLogin(e)}>
           <h3>Login</h3>
           <div>
@@ -97,13 +152,15 @@ class Login extends Component {
             />
           </div>
           <div>
-            <button type="submit">Login</button>
+            <button type="submit" className="login-btn">
+              Login
+            </button>
           </div>
         </form>
-      </div>
+      </StyledAuthWrapper>
     );
     const RegisterDisplay = (
-      <div className="register">
+      <StyledAuthWrapper>
         <form method="post" onSubmit={this.submitRegister}>
           <h3>Register</h3>
           <div>
@@ -134,10 +191,12 @@ class Login extends Component {
             />
           </div>
           <div>
-            <button type="submit">Register</button>
+            <button type="submit" className="register-btn">
+              Register
+            </button>
           </div>
         </form>
-      </div>
+      </StyledAuthWrapper>
     );
 
     return (
@@ -155,6 +214,7 @@ class Login extends Component {
             onClick={() =>
               this.setState({ loginOpen: false, registerOpen: true })
             }
+            style={registerOpen ? { color: "green" } : { color: "unset" }}
           >
             Register
           </span>
@@ -163,6 +223,7 @@ class Login extends Component {
             onClick={() =>
               this.setState({ registerOpen: false, loginOpen: true })
             }
+            style={loginOpen ? { color: "green" } : { color: "unset" }}
           >
             Login
           </span>
@@ -175,7 +236,12 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  userId: state.auth.userId,
+  error: state.auth.error
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { loginUser, registerUser }
 )(Login);

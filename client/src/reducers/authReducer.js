@@ -6,10 +6,14 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILURE
 } from "../actions/types";
+import jwtDecode from "jwt-decode";
+
+const token = localStorage.getItem("token");
+const user = token ? jwtDecode(token) : null;
 
 const initialState = {
-  userId: null,
-  username: "",
+  userId: user ? user.subject : null,
+  username: user ? user.username : "",
   loggingIn: false,
   registeringUser: false,
   error: null

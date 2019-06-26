@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { StyledNavBar } from "./_NavbarStyle";
 import AuthModal from "./modals/Auth";
@@ -52,21 +53,41 @@ class Navbar extends React.Component {
           <li>
             <NavLink to="/add-story">Create Story</NavLink>
           </li>
-          <li>
-            <a
-              href="/#"
-              onClick={e => {
-                e.preventDefault();
-                this.openLoginModal();
-              }}
-            >
-              Login
-            </a>
-          </li>
+          {!this.props.userId ? (
+            <li>
+              <a
+                href="/#"
+                onClick={e => {
+                  e.preventDefault();
+                  this.openLoginModal();
+                }}
+              >
+                Login
+              </a>
+            </li>
+          ) : (
+            <li>
+              <a
+                href="/#"
+                onClick={e => {
+                  e.preventDefault();
+                  localStorage.removeItem("token");
+                  window.location.reload();
+                }}
+                style={{ color: "red" }}
+              >
+                Logout
+              </a>
+            </li>
+          )}
         </ul>
       </StyledNavBar>
     );
   }
 }
 
-export default Navbar;
+const mapStateToProps = state => ({
+  userId: state.auth.userId
+});
+
+export default connect(mapStateToProps)(Navbar);
