@@ -28,7 +28,7 @@ const fetchSuccess = stories => {
     ...story,
     username: faker.name.findName(),
     avatar: faker.image.avatar(),
-    image: faker.image.people()
+    image: faker.random.image()
   }));
   return {
     type: FETCH_SUCCESS,
