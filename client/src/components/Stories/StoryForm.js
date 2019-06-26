@@ -57,7 +57,7 @@ class StoryForm extends Component {
       sName: props.story ? props.story.sName : "",
       sContent: props.story ? props.story.sContent : "",
       user: null || 3,
-      sCountry: props.story ? props.story.sCountry : ""
+      sCountry: props.story && props.story.sCountry ? props.story.sCountry : ""
     };
   }
 
@@ -75,6 +75,7 @@ class StoryForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { story } = nextProps;
+
     this.setState({
       id: story ? story.id : "",
       sName: story ? story.sName : "",
@@ -157,7 +158,9 @@ class StoryForm extends Component {
 const mapStateToProps = state => ({
   editing: state.stories.editing,
   currentStory: state.stories.currentStory,
-  story: state.stories.stories.find(st => state.stories.currentStory === st.id)
+  story: state.stories.currentStory
+    ? state.stories.stories.find(st => state.stories.currentStory === st.id)
+    : { sName: "", sContent: "", sCountry: "" }
 });
 
 export default connect(
