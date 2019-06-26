@@ -23,3 +23,13 @@ export const GETTING_STORY = "GETTING_STORY";
 export const GET_FAILURE = "GET_FAILURE";
 export const GET_SUCCESS = "GET_SUCCESS";
 export const EDITING_STORY = "EDITING_STORY";
+
+// user login
+export const LOGGING_IN = "LOGGING_IN";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
+
+// user login
+export const REGISTERING = "REGISTERING";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAILURE = "REGISTER_FAILURE";

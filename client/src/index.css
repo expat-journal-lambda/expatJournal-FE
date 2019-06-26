@@ -14,3 +14,12 @@ ul {
   padding: 0px;
   list-style: none;
 }
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #0d59939c;
+}
