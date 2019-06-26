@@ -72,7 +72,7 @@ class Story extends Component {
             </React.Fragment>
           ) : (
             <a href="/#" className="btn btn-default">
-              Read
+              {story.username}
             </a>
           )}
         </StoryFooter>

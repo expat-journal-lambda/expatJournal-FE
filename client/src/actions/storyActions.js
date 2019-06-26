@@ -18,14 +18,23 @@ import {
   UPDATE_FAILURE,
   UPDATE_SUCCESS
 } from "./types";
+import faker from "faker";
 
 const apiUrl = "https://expat-stack.herokuapp.com/api";
 
 // FETCH STORIES
-const fetchSuccess = friends => ({
-  type: FETCH_SUCCESS,
-  payload: friends
-});
+const fetchSuccess = stories => {
+  const updatedStories = stories.map(story => ({
+    ...story,
+    username: faker.name.findName(),
+    avatar: faker.image.avatar(),
+    image: faker.image.people()
+  }));
+  return {
+    type: FETCH_SUCCESS,
+    payload: updatedStories
+  };
+};
 
 const fetchFailure = error => ({
   type: FETCH_FAILURE,
