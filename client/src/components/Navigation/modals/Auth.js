@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import Modal from "react-modal";
+import { loginUser } from "../../../actions/authActions";
 
 const customStyles = {
   content: {
@@ -13,7 +15,7 @@ const customStyles = {
   }
 };
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -51,7 +53,8 @@ export default class Login extends Component {
 
   submitLogin = e => {
     e.preventDefault();
-
+    this.props.loginUser(this.state.loginData);
+    // window.location.reload();
   };
 
   render() {
@@ -150,3 +153,8 @@ export default class Login extends Component {
     );
   }
 }
+
+export default connect(
+  null,
+  { loginUser }
+)(Login);
