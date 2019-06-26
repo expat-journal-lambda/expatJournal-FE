@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { StyledNavBar } from "./_NavbarStyle";
-import Login from "./modals/Login";
+import AuthModal from "./modals/Auth";
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class Navbar extends React.Component {
     const { modalOpen } = this.state;
     return (
       <StyledNavBar>
-        <Login
+        <AuthModal
           modalOpen={modalOpen}
           closeModal={this.closeModal}
           afterOpenLoginModal={this.afterOpenLoginModal}
