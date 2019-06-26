@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
-import { loginUser, registerData } from "../../../actions/authActions";
+import { loginUser, registerUser } from "../../../actions/authActions";
 
 const customStyles = {
   content: {
@@ -30,7 +30,9 @@ class Login extends Component {
         username: "",
         password: "",
         passwordConf: ""
-      }
+      },
+      msg: "",
+      msgClass: ""
     };
   }
 
@@ -59,7 +61,13 @@ class Login extends Component {
 
   submitRegister = e => {
     e.preventDefault();
-    this.props.registerUser(this.state.registerData);
+    const { username, password, passwordConf } = this.state.registerData;
+    this.setState({
+      ...this.state,
+      msg: "The two passwords do not match",
+      msgClass: "error"
+    });
+    this.props.registerUser({ username, password });
     // window.location.reload();
   };
 
@@ -96,7 +104,7 @@ class Login extends Component {
     );
     const RegisterDisplay = (
       <div className="register">
-        <form>
+        <form method="post" onSubmit={this.submitRegister}>
           <h3>Register</h3>
           <div>
             <input
@@ -108,13 +116,19 @@ class Login extends Component {
             />
           </div>
           <div>
-            <input type="password" name="password" placeholder="Password" />
+            <input
+              type="password"
+              name="password"
+              value={registerData.password}
+              onChange={this.registerChange}
+              placeholder="Password"
+            />
           </div>
           <div>
             <input
               type="password"
               name="passwordConf"
-              value={registerData.password}
+              value={registerData.passwordConf}
               onChange={this.registerChange}
               placeholder="Password Confirm"
             />
@@ -153,6 +167,7 @@ class Login extends Component {
             Login
           </span>
         </header>
+        {this.state.msg && <p>{this.state.msg}</p>}
         {loginOpen && LoginDisplay}
         {registerOpen && RegisterDisplay}
       </Modal>
@@ -162,5 +177,5 @@ class Login extends Component {
 
 export default connect(
   null,
-  { loginUser, registerData }
+  { loginUser, registerUser }
 )(Login);
