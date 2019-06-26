@@ -3,6 +3,32 @@ import { connect } from "react-redux";
 import Modal from "react-modal";
 import { loginUser, registerUser } from "../../../actions/authActions";
 import styled from "styled-components";
+import { IoIosClose } from "react-icons/io";
+
+const StyledModalHeader = styled.header`
+  display: flex;
+  padding-top: 2rem;
+
+  span {
+    flex-grow: 1;
+    text-align: center;
+    padding: 1.2rem;
+
+    &.active {
+      background: #8ec5ed;
+      border-radius: 5px;
+      color: white;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+    &.register-tab {
+    }
+
+    &.login-tab {
+    }
+  }
+`;
 
 const StyledAuthWrapper = styled.div`
   form h3 {
@@ -113,7 +139,7 @@ class Login extends Component {
       });
     } else {
       this.props.registerUser({ username, password });
-      window.location.reload();
+
       if (this.props.userId) {
         this.setState({
           ...this.state,
@@ -135,6 +161,7 @@ class Login extends Component {
           <h3>Login</h3>
           <div>
             <input
+              autoFocus
               type="text"
               name="username"
               value={loginData.username}
@@ -165,6 +192,7 @@ class Login extends Component {
           <h3>Register</h3>
           <div>
             <input
+              autoFocus
               type="text"
               name="username"
               value={registerData.username}
@@ -209,25 +237,35 @@ class Login extends Component {
         overlayClassName="Overlay"
         ariaHideApp={false}
       >
-        <header>
-          <span
-            onClick={() =>
-              this.setState({ loginOpen: false, registerOpen: true })
-            }
-            style={registerOpen ? { color: "green" } : { color: "unset" }}
-          >
-            Register
-          </span>
-          &nbsp;
+        <IoIosClose
+          style={{
+            position: "absolute",
+            right: "0.5rem",
+            top: "0.5rem",
+            color: "red",
+            fontSize: "2rem",
+            cursor: "pointer"
+          }}
+          onClick={closeModal}
+        />
+        <StyledModalHeader>
           <span
             onClick={() =>
               this.setState({ registerOpen: false, loginOpen: true })
             }
-            style={loginOpen ? { color: "green" } : { color: "unset" }}
+            className={loginOpen ? "active" : "login-tab inactive"}
           >
             Login
           </span>
-        </header>
+          <span
+            onClick={() =>
+              this.setState({ loginOpen: false, registerOpen: true })
+            }
+            className={registerOpen ? "active" : "register-tab inactive"}
+          >
+            Register
+          </span>
+        </StyledModalHeader>
         {this.state.msg && <p>{this.state.msg}</p>}
         {loginOpen && LoginDisplay}
         {registerOpen && RegisterDisplay}
