@@ -53,7 +53,7 @@ class Login extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if ((this.state.loginOpen || this.state.registerOpen) && nextProps.userId) {
+    if (this.props.modalOpen && nextProps.userId) {
       this.setState({
         msg: "You are now logged in. Redirecting...",
         msgClass: "alert-success"
@@ -66,10 +66,7 @@ class Login extends Component {
         window.location.reload();
       }, 3000);
     }
-    if (
-      (this.state.loginOpen || this.state.registerOpen) &&
-      !nextProps.userId
-    ) {
+    if (this.props.modalOpen && !nextProps.userId) {
       this.setState({
         msg: nextProps.error,
         msgClass: "alert-danger"
@@ -102,7 +99,7 @@ class Login extends Component {
     } else {
       this.props.registerUser({ username, password });
 
-      if (this.props.userId) {
+      if (this.props.userId && this.props.modalOpen) {
         this.setState({
           ...this.state,
           msg: "You are now logged in. Redirecting...",
