@@ -30,7 +30,7 @@ const loginSuccess = user => ({
 export const loginUser = user => dispatch => {
   dispatch(loggingIn(true));
   const url = `${apiUrl}/users/login`;
-  axiosImproved()
+  axios
     .post(url, user)
     .then(res => {
       const { token } = res.data;

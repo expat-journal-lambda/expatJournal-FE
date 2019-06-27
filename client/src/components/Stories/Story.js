@@ -14,6 +14,7 @@ const StyledStory = styled.div`
   margin: 1rem;
   box-sizing: border-box;
   background: white;
+  cursor: pointer;
   -webkit-box-shadow: 0 5px 8px -3px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 5px 8px -3px rgba(0, 0, 0, 0.15);
   box-shadow: 0 5px 8px -3px rgba(0, 0, 0, 0.15);
@@ -22,8 +23,21 @@ const StyledStory = styled.div`
     width: 100%;
     height: 290px;
     overflow: hidden;
+    position: relative;
+
     img {
       width: 100%;
+    }
+
+    span {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      border: 1px solid transparent;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 0.3rem 1rem;
+      color: white;
+      border-radius: 5px;
     }
   }
 `;
@@ -76,7 +90,7 @@ const Delete = styled(IoIosClose)`
   }
 `;
 
-const Edit = styled(Link)`
+const Edit = styled.div`
   color: green;
   font-size: 1.2rem;
   margin: auto 1rem auto 1.5rem;
@@ -90,10 +104,14 @@ class Story extends Component {
   render() {
     const { story, deleteStory, userId } = this.props;
     return (
-      <StyledStory>
+      <StyledStory
+        onClick={e => {
+          this.props.history.push(`/read-story/${story.id}`);
+        }}
+      >
         <div className="story-image">
           <img src={story.image} alt={story.sName} />
-          <span>{story.sCountry}</span>
+          {story.sCountry && <span>{story.sCountry}</span>}
         </div>
         <StoryFooter>
           <div className="post-title">
@@ -106,8 +124,20 @@ class Story extends Component {
             </div>
             {userId && (
               <div className="action-btns">
-                <Delete onClick={() => deleteStory(story.id)}>x</Delete>
-                <Edit to={`/stories/edit/${story.id}`}>
+                <Delete
+                  onClick={e => {
+                    e.stopPropagation();
+                    deleteStory(story.id);
+                  }}
+                >
+                  x
+                </Delete>
+                <Edit
+                  onClick={e => {
+                    e.stopPropagation();
+                    this.props.history.push(`/stories/edit/${story.id}`);
+                  }}
+                >
                   <IoMdCreate />
                 </Edit>
               </div>
