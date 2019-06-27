@@ -47,7 +47,13 @@ export const loginUser = user => dispatch => {
       };
       dispatch(loginSuccess(user));
     })
-    .catch(err => dispatch(loginFailure(err.message)))
+    .catch(err => {
+      if (err.response.status === 401) {
+        dispatch(loginFailure("Wrong credentials"));
+      } else {
+        dispatch(loginFailure("Failed to login"));
+      }
+    })
     .finally(() => dispatch(loggingIn(false)));
 };
 

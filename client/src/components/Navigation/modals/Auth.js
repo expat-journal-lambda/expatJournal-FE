@@ -53,10 +53,6 @@ class Login extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log("Will mount", nextProps);
-    if (nextProps.error) {
-      alert(nextProps.error);
-    }
     if ((this.state.loginOpen || this.state.registerOpen) && nextProps.userId) {
       this.setState({
         msg: "You are now logged in. Redirecting...",
@@ -70,10 +66,20 @@ class Login extends Component {
         window.location.reload();
       }, 3000);
     }
+    if (
+      (this.state.loginOpen || this.state.registerOpen) &&
+      !nextProps.userId
+    ) {
+      this.setState({
+        msg: nextProps.error,
+        msgClass: "alert-danger"
+      });
+    }
   }
 
   submitLogin = e => {
     e.preventDefault();
+    this.props.setErrorMessage(null);
     this.props.loginUser(this.state.loginData);
   };
 
