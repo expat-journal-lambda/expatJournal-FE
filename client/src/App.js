@@ -13,6 +13,7 @@ const App = () => {
       <Route path="/add-story" component={StoryForm} />
       <Route path="/read-story/:id" component={SingleStory} />
       <Route path="/stories/edit/:id" component={StoryForm} />
+      <Route path="*" component={StoryList} />
     </div>
   );
 };
