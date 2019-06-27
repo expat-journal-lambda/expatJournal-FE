@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getStory } from "../../actions/storyActions";
+import { getStory, fetchStories } from "../../actions/storyActions";
 import styled from "styled-components";
 const sectionDivider = require("../../images/section-divider.png");
 
@@ -42,6 +42,7 @@ class SingleStory extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
+    this.props.fetchStories();
     this.props.getStory(id);
     this.setState({
       sName: this.props.story ? this.props.story.sName : "",
@@ -88,5 +89,5 @@ const mapStateToProps = (state, props) => {
 
 export default connect(
   mapStateToProps,
-  { getStory }
+  { getStory, fetchStories }
 )(SingleStory);
