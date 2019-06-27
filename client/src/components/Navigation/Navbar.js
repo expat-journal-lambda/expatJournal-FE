@@ -20,7 +20,7 @@ class Navbar extends React.Component {
       this.setState({ modalOpen: true });
     } else if (this.props.userId && urlCheck.includes("auth=open")) {
       this.setState({ modalOpen: false });
-      window.location.href = "/";
+      // window.location.href = "/";
     }
   }
 
