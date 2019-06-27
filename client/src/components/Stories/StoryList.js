@@ -23,7 +23,7 @@ class StoriesList extends Component {
     return (
       <StyledStoryList>
         {stories.map(story => (
-          <Story key={story.id} story={story} />
+          <Story {...this.props} key={story.id} story={story} />
         ))}
       </StyledStoryList>
     );
