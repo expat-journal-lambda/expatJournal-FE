@@ -12,21 +12,24 @@ class Navbar extends React.Component {
       modalOpen: false
     };
   }
+
+  componentDidMount() {
+    const urlCheck = window.location.href;
+
+    if (!this.props.userId && urlCheck.includes("auth=open")) {
+      this.setState({ modalOpen: true });
+    } else if (this.props.userId && urlCheck.includes("auth=open")) {
+      debugger;
+      this.setState({ modalOpen: false });
+      this.props.history.push("/");
+    }
+  }
   openLoginModal = () => {
     this.setState({ modalOpen: true });
   };
 
-  afterOpenLoginModal = () => {
-    // references are now sync'd and can be accessed.
-    // this.subtitle.style.color = "#f00";
-  };
   openModal = () => {
     this.setState({ modalOpen: true });
-  };
-
-  afterOpenModal = () => {
-    // references are now sync'd and can be accessed.
-    // this.subtitle.style.color = "#f00";
   };
 
   closeModal = () => {
@@ -38,6 +41,7 @@ class Navbar extends React.Component {
     return (
       <StyledNavBar>
         <AuthModal
+          {...this.props}
           modalOpen={modalOpen}
           closeModal={this.closeModal}
           afterOpenLoginModal={this.afterOpenLoginModal}

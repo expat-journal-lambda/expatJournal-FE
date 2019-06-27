@@ -145,10 +145,6 @@ class Login extends Component {
   submitLogin = e => {
     e.preventDefault();
     this.props.loginUser(this.state.loginData);
-
-    // if (this.props.userId) {
-    //   window.location.reload();
-    // }
   };
 
   submitRegister = e => {
@@ -169,7 +165,6 @@ class Login extends Component {
           msg: "You are now logged in. Redirecting...",
           msgClass: "alert-success"
         });
-
         window.location.reload();
       }
     }
