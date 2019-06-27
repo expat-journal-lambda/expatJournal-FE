@@ -4,7 +4,8 @@ import {
   LOGIN_FAILURE,
   REGISTERING,
   REGISTER_SUCCESS,
-  REGISTER_FAILURE
+  REGISTER_FAILURE,
+  SET_ERROR_MESSAGE
 } from "../actions/types";
 import jwtDecode from "jwt-decode";
 
@@ -33,6 +34,11 @@ export default (state = initialState, action) => {
         username: action.payload.username
       };
     case LOGIN_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      };
+    case SET_ERROR_MESSAGE:
       return {
         ...state,
         error: action.payload

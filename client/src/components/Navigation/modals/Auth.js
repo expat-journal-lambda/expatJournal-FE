@@ -1,91 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
-import { loginUser, registerUser } from "../../../actions/authActions";
-import styled from "styled-components";
+import {
+  loginUser,
+  registerUser,
+  setErrorMessage
+} from "../../../actions/authActions";
 import { IoIosClose } from "react-icons/io";
-
-const StyledMessage = styled.div`
-  margin: 1rem auto;
-`;
-
-const StyledModalHeader = styled.header`
-  display: flex;
-  padding-top: 2rem;
-
-  span {
-    flex-grow: 1;
-    text-align: center;
-    padding: 1.2rem;
-
-    &.active {
-      background: #8ec5ed;
-      border-radius: 5px;
-      color: white;
-    }
-    &:hover {
-      cursor: pointer;
-    }
-    &.register-tab {
-    }
-
-    &.login-tab {
-    }
-  }
-`;
-
-const StyledAuthWrapper = styled.div`
-  form h3 {
-    text-align: center;
-    margin: 2rem auto;
-  }
-
-  form input {
-    width: 100%;
-    font-size: 1.2rem;
-    margin-bottom: 0.5em;
-    padding: 0.8em;
-    border-radius: 5px;
-    border: 1px solid #d1d1d1;
-    font-family: "Montserrat", sans-serif;
-    outline: none;
-  }
-  form button {
-    width: 100%;
-    padding: 0.9rem;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    border: 1px solid transparent;
-    background: #177abf;
-    color: white;
-    font-family: "Montserrat", sans-serif;
-    outline: none;
-
-    &:hover {
-      cursor: pointer;
-      background: #136198;
-    }
-
-    &.register-btn {
-      background: #4ea699;
-      &:hover {
-        background: #3e847a;
-      }
-    }
-  }
-`;
-
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    width: "40%",
-    transform: "translate(-50%, -50%)"
-  }
-};
+import {
+  StyledMessage,
+  StyledModalHeader,
+  StyledAuthWrapper,
+  customStyles
+} from "./_StyledAuth";
 
 class Login extends Component {
   constructor(props) {
@@ -126,7 +53,6 @@ class Login extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log("Will mount", nextProps);
     if ((this.state.loginOpen || this.state.registerOpen) && nextProps.userId) {
       this.setState({
         msg: "You are now logged in. Redirecting...",
@@ -140,21 +66,38 @@ class Login extends Component {
         window.location.reload();
       }, 3000);
     }
+    if (
+      (this.state.loginOpen || this.state.registerOpen) &&
+      !nextProps.userId
+    ) {
+      this.setState({
+        msg: nextProps.error,
+        msgClass: "alert-danger"
+      });
+    }
   }
 
   submitLogin = e => {
     e.preventDefault();
+    this.props.setErrorMessage(null);
     this.props.loginUser(this.state.loginData);
   };
 
   submitRegister = e => {
     e.preventDefault();
+    this.props.setErrorMessage(null);
     const { username, password, passwordConf } = this.state.registerData;
     if (password !== passwordConf) {
       this.setState({
         ...this.state,
         msg: "The two passwords do not match",
-        msgClass: "error"
+        msgClass: "alert-danger"
+      });
+    } else if (!username) {
+      this.setState({
+        ...this.state,
+        msg: "Username required",
+        msgClass: "alert-danger"
       });
     } else {
       this.props.registerUser({ username, password });
@@ -269,7 +212,12 @@ class Login extends Component {
         <StyledModalHeader>
           <span
             onClick={() =>
-              this.setState({ registerOpen: false, loginOpen: true })
+              this.setState({
+                registerOpen: false,
+                loginOpen: true,
+                msg: "",
+                msgClass: ""
+              })
             }
             className={loginOpen ? "active" : "login-tab inactive"}
           >
@@ -277,7 +225,12 @@ class Login extends Component {
           </span>
           <span
             onClick={() =>
-              this.setState({ loginOpen: false, registerOpen: true })
+              this.setState({
+                loginOpen: false,
+                registerOpen: true,
+                msg: "",
+                msgClass: ""
+              })
             }
             className={registerOpen ? "active" : "register-tab inactive"}
           >
@@ -303,5 +256,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser, registerUser }
+  { loginUser, registerUser, setErrorMessage }
 )(Login);

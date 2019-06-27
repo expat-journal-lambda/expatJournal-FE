@@ -6,7 +6,8 @@ import {
   LOGIN_SUCCESS,
   REGISTERING,
   REGISTER_FAILURE,
-  REGISTER_SUCCESS
+  REGISTER_SUCCESS,
+  SET_ERROR_MESSAGE
 } from "./types";
 
 const apiUrl = "https://expat-stack.herokuapp.com/api";
@@ -16,14 +17,19 @@ const loggingIn = status => ({
   payload: status
 });
 
-const loginFailure = status => ({
+const loginFailure = message => ({
   type: LOGIN_FAILURE,
-  payload: status
+  payload: message
 });
 
 const loginSuccess = user => ({
   type: LOGIN_SUCCESS,
   payload: user
+});
+
+export const setErrorMessage = message => ({
+  type: SET_ERROR_MESSAGE,
+  payload: message
 });
 
 export const loginUser = user => dispatch => {
@@ -41,7 +47,13 @@ export const loginUser = user => dispatch => {
       };
       dispatch(loginSuccess(user));
     })
-    .catch(err => dispatch(loginFailure(err.message)))
+    .catch(err => {
+      if (err.response.status === 401) {
+        dispatch(loginFailure("Wrong credentials"));
+      } else {
+        dispatch(loginFailure("Failed to login"));
+      }
+    })
     .finally(() => dispatch(loggingIn(false)));
 };
 
