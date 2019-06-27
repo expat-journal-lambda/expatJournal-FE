@@ -19,11 +19,11 @@ class Navbar extends React.Component {
     if (!this.props.userId && urlCheck.includes("auth=open")) {
       this.setState({ modalOpen: true });
     } else if (this.props.userId && urlCheck.includes("auth=open")) {
-      debugger;
       this.setState({ modalOpen: false });
-      this.props.history.push("/");
+      window.location.href = "/";
     }
   }
+
   openLoginModal = () => {
     this.setState({ modalOpen: true });
   };
