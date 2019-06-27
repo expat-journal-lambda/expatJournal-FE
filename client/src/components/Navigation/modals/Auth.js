@@ -91,7 +91,13 @@ class Login extends Component {
       this.setState({
         ...this.state,
         msg: "The two passwords do not match",
-        msgClass: "error"
+        msgClass: "alert-danger"
+      });
+    } else if (!username) {
+      this.setState({
+        ...this.state,
+        msg: "Username required",
+        msgClass: "alert-danger"
       });
     } else {
       this.props.registerUser({ username, password });
@@ -206,7 +212,12 @@ class Login extends Component {
         <StyledModalHeader>
           <span
             onClick={() =>
-              this.setState({ registerOpen: false, loginOpen: true })
+              this.setState({
+                registerOpen: false,
+                loginOpen: true,
+                msg: "",
+                msgClass: ""
+              })
             }
             className={loginOpen ? "active" : "login-tab inactive"}
           >
@@ -214,7 +225,12 @@ class Login extends Component {
           </span>
           <span
             onClick={() =>
-              this.setState({ loginOpen: false, registerOpen: true })
+              this.setState({
+                loginOpen: false,
+                registerOpen: true,
+                msg: "",
+                msgClass: ""
+              })
             }
             className={registerOpen ? "active" : "register-tab inactive"}
           >
