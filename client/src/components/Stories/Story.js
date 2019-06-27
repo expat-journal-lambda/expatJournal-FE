@@ -110,7 +110,7 @@ class Story extends Component {
         }}
       >
         <div className="story-image">
-          <img src={story.image} alt={story.sName} />
+          <img src={story.sImageUrl} alt={story.sName} />
           {story.sCountry && <span>{story.sCountry}</span>}
         </div>
         <StoryFooter>
