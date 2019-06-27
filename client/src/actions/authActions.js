@@ -1,5 +1,4 @@
 import axios from "axios";
-import axiosImproved from "../axios";
 import jwtDecode from "jwt-decode";
 import {
   LOGGING_IN,

@@ -8,7 +8,7 @@ import SingleStory from "./components/Stories/SingleStory";
 const App = () => {
   return (
     <div>
-      <Navbar />
+      <Route component={Navbar} />
       <Route exact path="/" component={StoryList} />
       <Route path="/add-story" component={StoryForm} />
       <Route path="/read-story/:id" component={SingleStory} />

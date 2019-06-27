@@ -59,7 +59,7 @@ class SingleStory extends Component {
   }
 
   render() {
-    const { sName, sContent, sCountry } = this.state;
+    const { sName, sContent } = this.state;
 
     return (
       <StyledSingleStory>
