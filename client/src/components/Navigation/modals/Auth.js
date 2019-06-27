@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
-import { loginUser, registerUser } from "../../../actions/authActions";
-import styled from "styled-components";
+import {
+  loginUser,
+  registerUser,
+  setErrorMessage
+} from "../../../actions/authActions";
 import { IoIosClose } from "react-icons/io";
+import styled from "styled-components";
 
 const StyledMessage = styled.div`
   margin: 1rem auto;
@@ -127,6 +131,9 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log("Will mount", nextProps);
+    if (nextProps.error) {
+      alert(nextProps.error);
+    }
     if ((this.state.loginOpen || this.state.registerOpen) && nextProps.userId) {
       this.setState({
         msg: "You are now logged in. Redirecting...",
@@ -149,6 +156,7 @@ class Login extends Component {
 
   submitRegister = e => {
     e.preventDefault();
+    this.props.setErrorMessage(null);
     const { username, password, passwordConf } = this.state.registerData;
     if (password !== passwordConf) {
       this.setState({
@@ -303,5 +311,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser, registerUser }
+  { loginUser, registerUser, setErrorMessage }
 )(Login);
