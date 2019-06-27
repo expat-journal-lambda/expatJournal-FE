@@ -7,7 +7,13 @@ import {
   editingStory,
   updateStory
 } from "../../actions/storyActions";
-import { StyledFormWrapper, StoryImage, StyledForm } from "./_StoryFormStyles";
+import {
+  StyledFormWrapper,
+  StyledForm,
+  ImageWrapper
+} from "./_StoryFormStyles";
+
+import { IoIosCamera } from "react-icons/io";
 
 const cloudinaryBaseUrl =
   "https://api.cloudinary.com/v1_1/drwm2jwpk/image/upload";
@@ -16,13 +22,15 @@ const uploadPresetName = "zk6xp044";
 class StoryForm extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       id: props.story ? props.story.id : "",
       sName: props.story ? props.story.sName : "",
       sContent: props.story ? props.story.sContent : "",
       user: null || 3,
       sCountry: props.story && props.story.sCountry ? props.story.sCountry : "",
-      url: null
+      sImageUrl: props.story ? props.story.sImageUrl : null,
+      imageUploading: false
     };
   }
 
@@ -44,6 +52,7 @@ class StoryForm extends Component {
     this.setState({
       id: story ? story.id : "",
       sName: story ? story.sName : "",
+      sImageUrl: story ? story.sImageUrl : "",
       sContent: story ? story.sContent : "",
       user: null || 3,
       sCountry: story && story.sCountry ? story.sCountry : ""
@@ -56,7 +65,9 @@ class StoryForm extends Component {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", uploadPresetName);
+    console.log(formData);
 
+    this.setState({ imageUploading: true });
     fetch(cloudinaryBaseUrl, {
       method: "POST",
       body: formData
@@ -64,10 +75,11 @@ class StoryForm extends Component {
       .then(response => response.json())
       .then(data => {
         if (data.secure_url) {
-          this.setState({ ...this.state, url: data.secure_url });
+          this.setState({ ...this.state, sImageUrl: data.secure_url });
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error(err))
+      .finally(() => this.setState({ imageUploading: false }));
   };
 
   change = evt => {
@@ -76,19 +88,51 @@ class StoryForm extends Component {
   };
 
   submit = evt => {
-    const { editing } = this.props;
     evt.preventDefault();
+    const { editing } = this.props;
+    const newStory = {
+      sName: this.state.sName,
+      sContent: this.state.sContent,
+      user: null || 3,
+      sCountry: this.state.sCountry,
+      sImageUrl: this.state.sImageUrl
+    };
+    const storyToUpdate = {
+      id: this.state.id,
+      sName: this.state.sName,
+      sContent: this.state.sContent,
+      user: null || 3,
+      sCountry: this.state.sCountry,
+      sImageUrl: this.state.sImageUrl
+    };
+
+    console.log("To Update", storyToUpdate);
+
     if (editing) {
-      this.props.updateStory(this.state);
+      this.props.updateStory(storyToUpdate);
       this.props.history.push("/");
+      this.setState({
+        id: "",
+        sName: "",
+        sContent: "",
+        user: null || 3,
+        sCountry: ""
+      });
     } else {
-      this.props.addStory(this.state);
+      this.props.addStory(newStory);
       this.props.history.push("/");
+      this.setState({
+        id: "",
+        sName: "",
+        sContent: "",
+        user: null || 3,
+        sCountry: ""
+      });
     }
   };
 
   render() {
-    const { sName, sContent, sCountry, url } = this.state;
+    const { sName, sContent, sCountry, sImageUrl, imageUploading } = this.state;
     const { editing } = this.props;
     const formTitle = editing ? "Edit Story" : "Add Story";
 
@@ -123,18 +167,33 @@ class StoryForm extends Component {
               placeholder="Description"
             />
           </div>
-          <div>
+          <ImageWrapper
+            onClick={e => {
+              this.fileUpload.click();
+            }}
+          >
             <input
               type="file"
               name="image"
+              ref={input => (this.fileUpload = input)}
               onChange={e => this.handleImage(e)}
             />
-          </div>
-          {url && (
-            <StoryImage>
-              <img src={url} alt={sName} />
-            </StoryImage>
-          )}
+            <div className="image-placeholder">
+              {imageUploading && <h1>Uploading...</h1>}
+              {sImageUrl && !imageUploading && (
+                <img src={sImageUrl} alt={sName} />
+              )}
+              {!sImageUrl && !imageUploading && (
+                <div className="upload-label">
+                  <IoIosCamera style={{}} size={80} />
+                  <p>
+                    <b>Click here</b> to upload your files to upload
+                  </p>
+                </div>
+              )}
+            </div>
+          </ImageWrapper>
+
           <div>
             {editing ? (
               <button type="submit" className="btn">

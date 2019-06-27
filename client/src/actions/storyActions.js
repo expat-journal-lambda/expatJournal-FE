@@ -27,9 +27,9 @@ const fetchSuccess = stories => {
   const updatedStories = stories.map(story => ({
     ...story,
     username: faker.name.findName(),
-    avatar: faker.image.avatar(),
-    image: faker.random.image()
+    avatar: faker.image.avatar()
   }));
+  console.log("updatedStories", updatedStories);
   return {
     type: FETCH_SUCCESS,
     payload: updatedStories
