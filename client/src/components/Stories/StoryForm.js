@@ -7,47 +7,11 @@ import {
   editingStory,
   updateStory
 } from "../../actions/storyActions";
-import styled from "styled-components";
+import { StyledFormWrapper, StoryImage, StyledForm } from "./_StoryFormStyles";
 
-const StyledFormWrapper = styled.div`
-  background: white;
-  width: 80%;
-  margin: 1rem auto;
-  padding: 4rem 0rem 4rem 0rem;
-  border-radius: 5px;
-`;
-
-const StyledForm = styled.form`
-  width: 80%;
-  margin: 1rem auto;
-
-  input,
-  textarea {
-    width: 100%;
-    font-size: 1.35rem;
-    padding: 1rem;
-    margin: 0.51rem auto;
-    outline: none;
-    font-family: "Montserrat", sans-serif;
-    border: 1px solid #d1d1d1;
-    border-radius: 5px;
-  }
-  h2 {
-    text-align: center;
-  }
-  .btn {
-    width: 100%;
-    font-size: 1.3rem;
-    padding: 0.9em;
-    border: 1px solid transparent;
-    color: white;
-    background: #09314d;
-    border-radius: 0.3em;
-
-    &:hover {
-    }
-  }
-`;
+const cloudinaryBaseUrl =
+  "https://api.cloudinary.com/v1_1/drwm2jwpk/image/upload";
+const uploadPresetName = "zk6xp044";
 
 class StoryForm extends Component {
   constructor(props) {
@@ -57,7 +21,8 @@ class StoryForm extends Component {
       sName: props.story ? props.story.sName : "",
       sContent: props.story ? props.story.sContent : "",
       user: null || 3,
-      sCountry: props.story && props.story.sCountry ? props.story.sCountry : ""
+      sCountry: props.story && props.story.sCountry ? props.story.sCountry : "",
+      url: null
     };
   }
 
@@ -85,6 +50,26 @@ class StoryForm extends Component {
     });
   }
 
+  handleImage = evt => {
+    const file = evt.target.files[0];
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPresetName);
+
+    fetch(cloudinaryBaseUrl, {
+      method: "POST",
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.secure_url) {
+          this.setState({ ...this.state, url: data.secure_url });
+        }
+      })
+      .catch(err => console.error(err));
+  };
+
   change = evt => {
     evt.preventDefault();
     this.setState({ [evt.target.name]: evt.target.value });
@@ -103,7 +88,7 @@ class StoryForm extends Component {
   };
 
   render() {
-    const { sName, sContent, sCountry } = this.state;
+    const { sName, sContent, sCountry, url } = this.state;
     const { editing } = this.props;
     const formTitle = editing ? "Edit Story" : "Add Story";
 
@@ -138,6 +123,18 @@ class StoryForm extends Component {
               placeholder="Description"
             />
           </div>
+          <div>
+            <input
+              type="file"
+              name="image"
+              onChange={e => this.handleImage(e)}
+            />
+          </div>
+          {url && (
+            <StoryImage>
+              <img src={url} alt={sName} />
+            </StoryImage>
+          )}
           <div>
             {editing ? (
               <button type="submit" className="btn">
