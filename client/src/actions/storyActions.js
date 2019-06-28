@@ -16,11 +16,17 @@ import {
   EDITING_STORY,
   UPDATING_STORY,
   UPDATE_FAILURE,
-  UPDATE_SUCCESS
+  UPDATE_SUCCESS,
+  SET_CURRENT_STORY
 } from "./types";
 import faker from "faker";
 
 const apiUrl = "https://expat-stack.herokuapp.com/api";
+
+export const currentStory = storyId => ({
+  type: SET_CURRENT_STORY,
+  payload: storyId
+});
 
 // FETCH STORIES
 const fetchSuccess = stories => {
