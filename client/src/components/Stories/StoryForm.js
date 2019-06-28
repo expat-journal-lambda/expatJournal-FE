@@ -5,7 +5,8 @@ import {
   getStory,
   fetchStories,
   editingStory,
-  updateStory
+  updateStory,
+  currentStory
 } from "../../actions/storyActions";
 import {
   StyledFormWrapper,
@@ -67,7 +68,6 @@ class StoryForm extends Component {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", uploadPresetName);
-    console.log(formData);
 
     this.setState({ imageUploading: true });
     fetch(cloudinaryBaseUrl, {
@@ -120,6 +120,7 @@ class StoryForm extends Component {
         user: null || 3,
         sCountry: ""
       });
+      this.props.currentStory(null);
     } else {
       this.props.addStory(newStory);
       this.props.history.push("/");
@@ -238,5 +239,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addStory, getStory, fetchStories, editingStory, updateStory }
+  { addStory, getStory, fetchStories, editingStory, updateStory, currentStory }
 )(StoryForm);

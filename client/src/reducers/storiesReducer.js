@@ -11,7 +11,8 @@ import {
   EDITING_STORY,
   UPDATING_STORY,
   UPDATE_SUCCESS,
-  UPDATE_FAILURE
+  UPDATE_FAILURE,
+  SET_CURRENT_STORY
 } from "../actions/types";
 
 const initialState = {
@@ -86,6 +87,12 @@ export default (state = initialState, action) => {
         ...state,
         currentStory: action.payload,
         editing: true
+      };
+
+    case SET_CURRENT_STORY:
+      return {
+        ...state,
+        currentStory: action.payload
       };
     case EDITING_STORY:
       return {
