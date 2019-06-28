@@ -8,11 +8,8 @@ const reducers = combineReducers({
   stories,
   auth
 });
-
+const enhanceComposer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE_ || compose;
 export default createStore(
   reducers,
-  compose(
-    applyMiddleware(thunk, logger),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+  enhanceComposer(applyMiddleware(thunk, logger))
 );
