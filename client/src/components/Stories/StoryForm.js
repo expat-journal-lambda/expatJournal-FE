@@ -14,6 +14,8 @@ import {
 } from "./_StoryFormStyles";
 
 import { IoIosCamera } from "react-icons/io";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const cloudinaryBaseUrl =
   "https://api.cloudinary.com/v1_1/drwm2jwpk/image/upload";
@@ -159,12 +161,27 @@ class StoryForm extends Component {
               placeholder="Country"
             />
           </div>
-          <div>
-            <textarea
+          <div style={{ marginBottom: "1rem" }}>
+            {/* <textarea
               name="sContent"
               value={sContent}
               onChange={this.change}
               placeholder="Description"
+            /> */}
+            <CKEditor
+              editor={ClassicEditor}
+              data={sContent}
+              onInit={editor => {}}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                this.setState({ ...this.state, sContent: data });
+              }}
+              onBlur={editor => {
+                console.log("Blur.", editor);
+              }}
+              onFocus={editor => {
+                console.log("Focus.", editor);
+              }}
             />
           </div>
           <ImageWrapper

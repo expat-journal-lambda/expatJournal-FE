@@ -66,7 +66,7 @@ class SingleStory extends Component {
       <StyledSingleStory>
         <PageTitle>{sName}</PageTitle>
         <Divider src={sectionDivider} />
-        <div className="story-content">{sContent}</div>
+        <div dangerouslySetInnerHTML={{ __html: sContent }} />
       </StyledSingleStory>
     );
   }
